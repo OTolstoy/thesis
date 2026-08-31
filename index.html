@@ -3,170 +3,774 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>WhatsApp-friendly Financial Questionnaire</title>
+  <title>Kingdom Financial Stewardship & Voluntary Ministry Questionnaire</title>
   <link rel="stylesheet" href="styles.css">
-  <meta name="description" content="Mobile-first questionnaire formatted for sharing responses via WhatsApp">
-  <!-- Analytics: set up one of the options below.
-       Option A: Google Analytics (GA4) - paste your Measurement ID into the snippet and uncomment.
-       Option B: Plausible (privacy-friendly) - add your domain and uncomment.
-       Alternatively leave empty to disable analytics on this client. -->
-  <meta name="ga-measurement-id" content="">
-  <!--
-  <script async src="https://www.googletagmanager.com/gtag/js?id=MEASUREMENT_ID"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);} 
-    gtag('js', new Date());
-    gtag('config', 'MEASUREMENT_ID', { 'anonymize_ip': true });
-  </script>
-  -->
-  <!-- Plausible example (replace your-domain.com):
-  <script defer data-domain="your-domain.com" src="https://plausible.io/js/plausible.js"></script>
-  -->
+  <meta name="description" content="Questionnaire on financial stewardship and voluntary ministry participation">
 </head>
 <body>
   <main class="container">
-    <h1>Financial & Ministry Participation Survey</h1>
+    <div class="header">
+      <h1>Kingdom Financial Stewardship & Voluntary Ministry Participation</h1>
+      <p class="subtitle">Individual Christian Member Questionnaire</p>
+      <p class="study-info"><strong>Study Area:</strong> Selected Churches in Kakamega County, Western Kenya</p>
+    </div>
 
-    <p class="muted">Please answer the questions below. Progress will be shown at the top. All required questions must be completed before sending.</p>
+    <div class="intro-section">
+      <p><strong>Purpose:</strong> This questionnaire examines the relationship between personal financial health, financial planning behaviour, investment behaviour, debt burden, and Christians' capacity, willingness, and actual participation in voluntary ministry.</p>
+      <p class="instructions"><strong>Instructions:</strong> Please answer each question honestly. There are no right or wrong answers. Do not write your name. The information provided will be treated confidentially and used only for academic purposes.</p>
+    </div>
 
-    <progress id="progress" value="0" max="100"></progress>
+    <div class="progress-container">
+      <progress id="progress" value="0" max="100"></progress>
+      <span class="progress-text" id="progressText">0% Complete</span>
+    </div>
 
-    <form id="surveyForm">
+    <form id="surveyForm" method="POST" action="https://formspree.io/f/YOUR_FORM_ID">
+
+      <!-- SECTION A: RESPONDENT PROFILE -->
       <fieldset>
-        <legend>Personal & Financial Health</legend>
-        <label>1. Age group
-          <select name="age" data-label="Age group" required>
+        <legend>SECTION A: Respondent Profile</legend>
+
+        <label>1. Age
+          <select name="q1_age" required>
             <option value="">Select...</option>
-            <option>Under 25</option>
-            <option>25-34</option>
-            <option>35-44</option>
-            <option>45-54</option>
-            <option>55+</option>
+            <option value="18-25">18–25</option>
+            <option value="26-35">26–35</option>
+            <option value="36-45">36–45</option>
+            <option value="46-55">46–55</option>
+            <option value="56+">56 and above</option>
           </select>
         </label>
 
-        <label>2. Monthly disposable income (approx)
-          <input type="text" name="income" data-label="Monthly disposable income" placeholder="e.g., $200" required>
+        <label>2. Gender
+          <select name="q2_gender" required>
+            <option value="">Select...</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Prefer not to say">Prefer not to say</option>
+          </select>
         </label>
 
-        <label>3. How would you rate your overall financial health?
-          <select name="fin_health" data-label="Overall financial health" required>
+        <label>3. What is your primary source of income?
+          <select name="q3_income_source" required>
             <option value="">Select...</option>
-            <option>Poor</option>
-            <option>Fair</option>
-            <option>Good</option>
-            <option>Very good</option>
-            <option>Excellent</option>
+            <option value="Formal employment/salary">Formal employment/salary</option>
+            <option value="Business/self-employment">Business/self-employment</option>
+            <option value="Casual work/freelancing">Casual work/freelancing</option>
+            <option value="Farming/agriculture">Farming/agriculture</option>
+            <option value="Pension/other regular income">Pension/other regular income</option>
+            <option value="Dependent/unemployed">Dependent/unemployed</option>
+            <option value="Other">Other (please specify)</option>
+          </select>
+        </label>
+        <label>If "Other", please specify:
+          <input type="text" name="q3_income_other" placeholder="Your answer">
+        </label>
+
+        <label>4. How long have you been a member of your current church?
+          <select name="q4_church_membership" required>
+            <option value="">Select...</option>
+            <option value="Less than 1 year">Less than 1 year</option>
+            <option value="1-3 years">1–3 years</option>
+            <option value="4-6 years">4–6 years</option>
+            <option value="7-10 years">7–10 years</option>
+            <option value="More than 10 years">More than 10 years</option>
           </select>
         </label>
       </fieldset>
 
+      <!-- SECTION B: PERSONAL FINANCIAL HEALTH -->
       <fieldset>
-        <legend>Financial Planning & Investment Behaviour</legend>
-        <label>4. Do you have a written financial plan?
-          <select name="has_plan" data-label="Has written financial plan" required>
+        <legend>SECTION B: Personal Financial Health</legend>
+        <p class="section-instruction">For each statement, indicate your level of agreement (SA=Strongly Agree, A=Agree, N=Neutral, D=Disagree, SD=Strongly Disagree)</p>
+
+        <div class="likert-group">
+          <div class="likert-statement">5. I am generally able to meet my regular financial obligations.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q5_meet_obligations" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q5_meet_obligations" value="Agree"> Agree</label>
+            <label><input type="radio" name="q5_meet_obligations" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q5_meet_obligations" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q5_meet_obligations" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">6. I can handle unexpected financial expenses without serious financial difficulty.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q6_unexpected_expenses" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q6_unexpected_expenses" value="Agree"> Agree</label>
+            <label><input type="radio" name="q6_unexpected_expenses" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q6_unexpected_expenses" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q6_unexpected_expenses" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">7. I have sufficient financial resources to meet my family's basic needs.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q7_basic_needs" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q7_basic_needs" value="Agree"> Agree</label>
+            <label><input type="radio" name="q7_basic_needs" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q7_basic_needs" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q7_basic_needs" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">8. I experience significant financial stress because of my current financial situation.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q8_financial_stress" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q8_financial_stress" value="Agree"> Agree</label>
+            <label><input type="radio" name="q8_financial_stress" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q8_financial_stress" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q8_financial_stress" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">9. I have some financial resources available after meeting my essential expenses.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q9_available_resources" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q9_available_resources" value="Agree"> Agree</label>
+            <label><input type="radio" name="q9_available_resources" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q9_available_resources" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q9_available_resources" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">10. I feel financially secure about my current situation.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q10_financial_secure" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q10_financial_secure" value="Agree"> Agree</label>
+            <label><input type="radio" name="q10_financial_secure" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q10_financial_secure" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q10_financial_secure" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">11. My financial situation allows me some flexibility to support activities beyond basic needs.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q11_flexibility" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q11_flexibility" value="Agree"> Agree</label>
+            <label><input type="radio" name="q11_flexibility" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q11_flexibility" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q11_flexibility" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- SECTION C: FINANCIAL PLANNING BEHAVIOUR -->
+      <fieldset>
+        <legend>SECTION C: Financial Planning Behaviour</legend>
+
+        <label>12. Do you currently prepare a personal or household budget?
+          <select name="q12_budget" required>
             <option value="">Select...</option>
-            <option>Yes</option>
-            <option>No</option>
+            <option value="Yes, consistently">Yes, consistently</option>
+            <option value="Yes, occasionally">Yes, occasionally</option>
+            <option value="No">No</option>
+            <option value="Not applicable">Not applicable</option>
           </select>
         </label>
 
-        <label>5. How often do you save or invest?
-          <select name="save_freq" data-label="Saving/investing frequency" required>
+        <label>13. How frequently do you monitor your expenditure against your financial plans?
+          <select name="q13_monitor_expenditure" required>
             <option value="">Select...</option>
-            <option>Never</option>
-            <option>Occasionally</option>
-            <option>Monthly</option>
-            <option>Weekly</option>
+            <option value="Always">Always</option>
+            <option value="Often">Often</option>
+            <option value="Sometimes">Sometimes</option>
+            <option value="Rarely">Rarely</option>
+            <option value="Never">Never</option>
           </select>
         </label>
 
-        <label>6. Primary investment types (select all that apply)
-          <div class="checkbox-group" data-label="Primary investment types">
-            <label><input type="checkbox" name="invest_types" value="Savings account"> Savings account</label>
-            <label><input type="checkbox" name="invest_types" value="Stocks"> Stocks</label>
-            <label><input type="checkbox" name="invest_types" value="Bonds"> Bonds</label>
-            <label><input type="checkbox" name="invest_types" value="Real estate"> Real estate</label>
-            <label><input type="checkbox" name="invest_types" value="None"> None</label>
+        <label>14. How frequently do you save part of your income?
+          <select name="q14_save_frequency" required>
+            <option value="">Select...</option>
+            <option value="Always">Always</option>
+            <option value="Often">Often</option>
+            <option value="Sometimes">Sometimes</option>
+            <option value="Rarely">Rarely</option>
+            <option value="Never">Never</option>
+          </select>
+        </label>
+
+        <div class="likert-group">
+          <div class="likert-statement">15a. I set financial goals for myself or my household.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q15a_financial_goals" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q15a_financial_goals" value="Agree"> Agree</label>
+            <label><input type="radio" name="q15a_financial_goals" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q15a_financial_goals" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q15a_financial_goals" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">15b. I plan for unexpected financial needs.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q15b_plan_unexpected" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q15b_plan_unexpected" value="Agree"> Agree</label>
+            <label><input type="radio" name="q15b_plan_unexpected" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q15b_plan_unexpected" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q15b_plan_unexpected" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">15c. I distinguish between essential and non-essential expenditure.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q15c_distinguish_expenses" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q15c_distinguish_expenses" value="Agree"> Agree</label>
+            <label><input type="radio" name="q15c_distinguish_expenses" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q15c_distinguish_expenses" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q15c_distinguish_expenses" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">15d. I review my financial situation regularly.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q15d_review_regularly" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q15d_review_regularly" value="Agree"> Agree</label>
+            <label><input type="radio" name="q15d_review_regularly" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q15d_review_regularly" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q15d_review_regularly" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">15e. Financial planning helps me manage my resources more effectively.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q15e_planning_helps" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q15e_planning_helps" value="Agree"> Agree</label>
+            <label><input type="radio" name="q15e_planning_helps" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q15e_planning_helps" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q15e_planning_helps" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <label>16. To what extent does your financial planning affect your ability to participate in voluntary ministry?
+          <select name="q16_planning_affects_ministry" required>
+            <option value="">Select...</option>
+            <option value="Very greatly">Very greatly</option>
+            <option value="Greatly">Greatly</option>
+            <option value="Moderately">Moderately</option>
+            <option value="Slightly">Slightly</option>
+            <option value="Not at all">Not at all</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <!-- SECTION D: INVESTMENT AND WEALTH-CREATION BEHAVIOUR -->
+      <fieldset>
+        <legend>SECTION D: Investment and Wealth-Creation Behaviour</legend>
+
+        <label>17. Which of the following savings or investment options do you currently use? (Select all that apply)
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q17_investment_options" value="SACCO"> SACCO</label>
+            <label><input type="checkbox" name="q17_investment_options" value="Chama/investment group"> Chama/investment group</label>
+            <label><input type="checkbox" name="q17_investment_options" value="Land/real estate/property"> Land/real estate/property</label>
+            <label><input type="checkbox" name="q17_investment_options" value="Stocks/shares"> Stocks/shares</label>
+            <label><input type="checkbox" name="q17_investment_options" value="Treasury bills/bonds"> Treasury bills/bonds</label>
+            <label><input type="checkbox" name="q17_investment_options" value="Money Market Fund"> Money Market Fund</label>
+            <label><input type="checkbox" name="q17_investment_options" value="Fixed deposit"> Fixed deposit</label>
+            <label><input type="checkbox" name="q17_investment_options" value="Personal business/enterprise"> Personal business/enterprise</label>
+            <label><input type="checkbox" name="q17_investment_options" value="None"> None</label>
           </div>
         </label>
-      </fieldset>
 
-      <fieldset>
-        <legend>Debt & Burden</legend>
-        <label>7. Total outstanding debt (approx)
-          <input type="text" name="debt" data-label="Total outstanding debt" placeholder="e.g., $5,000" required>
+        <label>18. How regularly do you save or invest for your future?
+          <select name="q18_save_invest_regularly" required>
+            <option value="">Select...</option>
+            <option value="Very regularly">Very regularly</option>
+            <option value="Regularly">Regularly</option>
+            <option value="Occasionally">Occasionally</option>
+            <option value="Rarely">Rarely</option>
+            <option value="Never">Never</option>
+          </select>
         </label>
 
-        <label>8. Does debt limit your participation in ministry activities?
-          <select name="debt_impact" data-label="Debt limits ministry participation" required>
+        <div class="likert-group">
+          <div class="likert-statement">19a. I deliberately set aside resources for long-term financial growth.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q19a_set_aside" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q19a_set_aside" value="Agree"> Agree</label>
+            <label><input type="radio" name="q19a_set_aside" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q19a_set_aside" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q19a_set_aside" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">19b. I consider the risks before making investment decisions.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q19b_consider_risks" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q19b_consider_risks" value="Agree"> Agree</label>
+            <label><input type="radio" name="q19b_consider_risks" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q19b_consider_risks" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q19b_consider_risks" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">19c. I seek information before choosing an investment.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q19c_seek_information" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q19c_seek_information" value="Agree"> Agree</label>
+            <label><input type="radio" name="q19c_seek_information" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q19c_seek_information" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q19c_seek_information" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">19d. My investment or saving activities have improved my financial security.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q19d_improved_security" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q19d_improved_security" value="Agree"> Agree</label>
+            <label><input type="radio" name="q19d_improved_security" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q19d_improved_security" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q19d_improved_security" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">19e. I would like to increase my investment activities in the future.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q19e_increase_investment" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q19e_increase_investment" value="Agree"> Agree</label>
+            <label><input type="radio" name="q19e_increase_investment" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q19e_increase_investment" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q19e_increase_investment" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <label>20. What is your main barrier to investment or long-term wealth creation?
+          <select name="q20_main_barrier" required>
             <option value="">Select...</option>
-            <option>Yes, a lot</option>
-            <option>Somewhat</option>
-            <option>No</option>
+            <option value="Insufficient income/capital">Insufficient income/capital</option>
+            <option value="Basic household expenses">Basic household expenses</option>
+            <option value="Debt repayment">Debt repayment</option>
+            <option value="Lack of investment knowledge">Lack of investment knowledge</option>
+            <option value="Fear of losing money">Fear of losing money</option>
+            <option value="Unstable income">Unstable income</option>
+            <option value="Lack of suitable investment opportunities">Lack of suitable investment opportunities</option>
+            <option value="Family responsibilities">Family responsibilities</option>
+            <option value="Not applicable—I currently invest">Not applicable—I currently invest</option>
           </select>
         </label>
       </fieldset>
 
+      <!-- SECTION E: DEBT BURDEN -->
       <fieldset>
-        <legend>Ministry Participation & Capacity</legend>
-        <label>9. Do you currently participate in ministry activities?
-          <select name="participate" data-label="Currently participate in ministry" required>
+        <legend>SECTION E: Debt Burden</legend>
+
+        <label>21. Do you currently have outstanding personal debt or loan obligations?
+          <select name="q21_has_debt" required>
             <option value="">Select...</option>
-            <option>Yes</option>
-            <option>No</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+            <option value="Prefer not to say">Prefer not to say</option>
           </select>
         </label>
 
-        <label>10. If yes, what role(s) do you perform? (brief)
-          <input type="text" name="roles" data-label="Ministry roles" placeholder="e.g., teaching, outreach">
-        </label>
-
-        <label>11. How confident are you in your ministry capacity (skills/time)?
-          <select name="capacity" data-label="Ministry capacity confidence" required>
+        <label>22. What proportion of your monthly income approximately goes toward debt repayment?
+          <select name="q22_debt_proportion" required>
             <option value="">Select...</option>
-            <option>Not confident</option>
-            <option>Somewhat confident</option>
-            <option>Confident</option>
-            <option>Very confident</option>
+            <option value="0%">0%</option>
+            <option value="1-20%">1–20%</option>
+            <option value="21-40%">21–40%</option>
+            <option value="More than 40%">More than 40%</option>
+            <option value="Prefer not to say">Prefer not to say</option>
           </select>
         </label>
 
-        <label>12. Would you be willing to participate in financially-focused ministry programs?
-          <select name="willingness" data-label="Willingness to participate" required>
+        <label>23. What types of debt do you currently have? (Select all that apply)
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q23_debt_types" value="Bank loan"> Bank loan</label>
+            <label><input type="checkbox" name="q23_debt_types" value="SACCO loan"> SACCO loan</label>
+            <label><input type="checkbox" name="q23_debt_types" value="Mobile money/digital loan"> Mobile money/digital loan</label>
+            <label><input type="checkbox" name="q23_debt_types" value="Personal/family borrowing"> Personal/family borrowing</label>
+            <label><input type="checkbox" name="q23_debt_types" value="Business loan"> Business loan</label>
+            <label><input type="checkbox" name="q23_debt_types" value="Mortgage/property loan"> Mortgage/property loan</label>
+            <label><input type="checkbox" name="q23_debt_types" value="None"> None</label>
+          </div>
+        </label>
+
+        <div class="likert-group">
+          <div class="likert-statement">24a. Debt repayments place significant pressure on my finances.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q24a_debt_pressure" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q24a_debt_pressure" value="Agree"> Agree</label>
+            <label><input type="radio" name="q24a_debt_pressure" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q24a_debt_pressure" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q24a_debt_pressure" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">24b. Debt reduces the money available for other important needs.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q24b_debt_reduces_money" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q24b_debt_reduces_money" value="Agree"> Agree</label>
+            <label><input type="radio" name="q24b_debt_reduces_money" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q24b_debt_reduces_money" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q24b_debt_reduces_money" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">24c. Debt-related financial stress affects my ability to participate in ministry.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q24c_debt_affects_ministry" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q24c_debt_affects_ministry" value="Agree"> Agree</label>
+            <label><input type="radio" name="q24c_debt_affects_ministry" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q24c_debt_affects_ministry" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q24c_debt_affects_ministry" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">24d. Debt obligations sometimes require me to prioritize income-generating activities over ministry activities.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q24d_debt_prioritize" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q24d_debt_prioritize" value="Agree"> Agree</label>
+            <label><input type="radio" name="q24d_debt_prioritize" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q24d_debt_prioritize" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q24d_debt_prioritize" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">24e. I am concerned about the long-term effect of my current debt obligations.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q24e_debt_concern" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q24e_debt_concern" value="Agree"> Agree</label>
+            <label><input type="radio" name="q24e_debt_concern" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q24e_debt_concern" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q24e_debt_concern" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- SECTION F: CAPACITY TO PARTICIPATE -->
+      <fieldset>
+        <legend>SECTION F: Capacity to Participate in Voluntary Ministry</legend>
+
+        <label>25. Which forms of voluntary ministry do you participate in? (Select all that apply)
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q25_ministry_forms" value="Evangelism/outreach"> Evangelism/outreach</label>
+            <label><input type="checkbox" name="q25_ministry_forms" value="Teaching/Bible study"> Teaching/Bible study</label>
+            <label><input type="checkbox" name="q25_ministry_forms" value="Worship/music"> Worship/music</label>
+            <label><input type="checkbox" name="q25_ministry_forms" value="Youth ministry"> Youth ministry</label>
+            <label><input type="checkbox" name="q25_ministry_forms" value="Children's ministry"> Children's ministry</label>
+            <label><input type="checkbox" name="q25_ministry_forms" value="Prayer ministry"> Prayer ministry</label>
+            <label><input type="checkbox" name="q25_ministry_forms" value="Church administration"> Church administration</label>
+            <label><input type="checkbox" name="q25_ministry_forms" value="Community service"> Community service</label>
+            <label><input type="checkbox" name="q25_ministry_forms" value="I currently do not participate"> I currently do not participate</label>
+          </div>
+        </label>
+
+        <label>26. How frequently do you participate in voluntary ministry?
+          <select name="q26_ministry_frequency" required>
             <option value="">Select...</option>
-            <option>Yes</option>
-            <option>No</option>
-            <option>Maybe</option>
+            <option value="Several times a week">Several times a week</option>
+            <option value="Weekly">Weekly</option>
+            <option value="Several times a month">Several times a month</option>
+            <option value="Occasionally">Occasionally</option>
+            <option value="Rarely">Rarely</option>
+            <option value="Never">Never</option>
           </select>
         </label>
+
+        <div class="likert-group">
+          <div class="likert-statement">27a. I have sufficient time to participate in voluntary ministry.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q27a_sufficient_time" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q27a_sufficient_time" value="Agree"> Agree</label>
+            <label><input type="radio" name="q27a_sufficient_time" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q27a_sufficient_time" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q27a_sufficient_time" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">27b. I can normally afford transportation costs associated with ministry activities.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q27b_afford_transport" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q27b_afford_transport" value="Agree"> Agree</label>
+            <label><input type="radio" name="q27b_afford_transport" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q27b_afford_transport" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q27b_afford_transport" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">27c. I can meet reasonable personal expenses associated with ministry participation.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q27c_meet_expenses" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q27c_meet_expenses" value="Agree"> Agree</label>
+            <label><input type="radio" name="q27c_meet_expenses" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q27c_meet_expenses" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q27c_meet_expenses" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">27d. My employment or business responsibilities limit my ministry involvement.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q27d_employment_limits" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q27d_employment_limits" value="Agree"> Agree</label>
+            <label><input type="radio" name="q27d_employment_limits" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q27d_employment_limits" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q27d_employment_limits" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">27e. My family financial responsibilities affect my ability to participate in ministry.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q27e_family_limits" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q27e_family_limits" value="Agree"> Agree</label>
+            <label><input type="radio" name="q27e_family_limits" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q27e_family_limits" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q27e_family_limits" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">27f. My financial situation gives me sufficient flexibility to participate in ministry.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q27f_financial_flexibility" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q27f_financial_flexibility" value="Agree"> Agree</label>
+            <label><input type="radio" name="q27f_financial_flexibility" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q27f_financial_flexibility" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q27f_financial_flexibility" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
       </fieldset>
 
+      <!-- SECTION G: WILLINGNESS -->
       <fieldset>
-        <legend>Practical Solutions & Feedback</legend>
-        <label>13. What practical solutions would help your financial participation? (short answer)
-          <textarea name="solutions" data-label="Practical solutions" rows="3" placeholder="e.g., flexible gifting, microloans"></textarea>
+        <legend>SECTION G: Willingness to Participate in Voluntary Ministry</legend>
+
+        <div class="likert-group">
+          <div class="likert-statement">28a. I desire to participate actively in voluntary ministry.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q28a_desire_participate" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q28a_desire_participate" value="Agree"> Agree</label>
+            <label><input type="radio" name="q28a_desire_participate" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q28a_desire_participate" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q28a_desire_participate" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">28b. I am willing to accept additional voluntary ministry responsibilities when needed.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q28b_accept_responsibilities" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q28b_accept_responsibilities" value="Agree"> Agree</label>
+            <label><input type="radio" name="q28b_accept_responsibilities" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q28b_accept_responsibilities" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q28b_accept_responsibilities" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">28c. I intend to continue participating in voluntary ministry.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q28c_intend_continue" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q28c_intend_continue" value="Agree"> Agree</label>
+            <label><input type="radio" name="q28c_intend_continue" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q28c_intend_continue" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q28c_intend_continue" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">28d. Financial difficulties sometimes reduce my willingness to participate in ministry.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q28d_difficulties_reduce" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q28d_difficulties_reduce" value="Agree"> Agree</label>
+            <label><input type="radio" name="q28d_difficulties_reduce" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q28d_difficulties_reduce" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q28d_difficulties_reduce" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">28e. I remain willing to serve even when my financial circumstances are difficult.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q28e_willing_despite_difficult" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q28e_willing_despite_difficult" value="Agree"> Agree</label>
+            <label><input type="radio" name="q28e_willing_despite_difficult" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q28e_willing_despite_difficult" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q28e_willing_despite_difficult" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">28f. I would participate more actively if some of my financial constraints were reduced.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q28f_more_if_reduced" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q28f_more_if_reduced" value="Agree"> Agree</label>
+            <label><input type="radio" name="q28f_more_if_reduced" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q28f_more_if_reduced" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q28f_more_if_reduced" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- SECTION H: ACTUAL PARTICIPATION -->
+      <fieldset>
+        <legend>SECTION H: Actual Participation and Financial Influence</legend>
+
+        <label>29. During the past 12 months, has your level of voluntary ministry participation:
+          <select name="q29_participation_change" required>
+            <option value="">Select...</option>
+            <option value="Increased">Increased</option>
+            <option value="Remained about the same">Remained about the same</option>
+            <option value="Decreased">Decreased</option>
+            <option value="Stopped completely">Stopped completely</option>
+            <option value="I have not participated">I have not participated</option>
+          </select>
+        </label>
+
+        <label>30. If your participation decreased or stopped, what were the main contributing factors? (Select all that apply)
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q30_factors_decreased" value="Financial difficulties"> Financial difficulties</label>
+            <label><input type="checkbox" name="q30_factors_decreased" value="Debt obligations"> Debt obligations</label>
+            <label><input type="checkbox" name="q30_factors_decreased" value="Employment/business demands"> Employment/business demands</label>
+            <label><input type="checkbox" name="q30_factors_decreased" value="Family responsibilities"> Family responsibilities</label>
+            <label><input type="checkbox" name="q30_factors_decreased" value="Health or personal circumstances"> Health or personal circumstances</label>
+            <label><input type="checkbox" name="q30_factors_decreased" value="Lack of interest/motivation"> Lack of interest/motivation</label>
+            <label><input type="checkbox" name="q30_factors_decreased" value="Church-related factors"> Church-related factors</label>
+            <label><input type="checkbox" name="q30_factors_decreased" value="Transportation difficulties"> Transportation difficulties</label>
+            <label><input type="checkbox" name="q30_factors_decreased" value="Not applicable"> Not applicable</label>
+          </div>
+        </label>
+
+        <div class="likert-group">
+          <div class="likert-statement">31a. My financial situation affects how frequently I participate in voluntary ministry.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q31a_financial_affects" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q31a_financial_affects" value="Agree"> Agree</label>
+            <label><input type="radio" name="q31a_financial_affects" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q31a_financial_affects" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q31a_financial_affects" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">31b. Better financial planning would make it easier for me to participate consistently in ministry.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q31b_better_planning" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q31b_better_planning" value="Agree"> Agree</label>
+            <label><input type="radio" name="q31b_better_planning" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q31b_better_planning" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q31b_better_planning" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">31c. Greater financial stability would increase my capacity to serve in ministry.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q31c_stability_increase" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q31c_stability_increase" value="Agree"> Agree</label>
+            <label><input type="radio" name="q31c_stability_increase" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q31c_stability_increase" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q31c_stability_increase" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">31d. Debt reduction would make it easier for me to participate in ministry.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q31d_debt_reduction" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q31d_debt_reduction" value="Agree"> Agree</label>
+            <label><input type="radio" name="q31d_debt_reduction" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q31d_debt_reduction" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q31d_debt_reduction" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="likert-group">
+          <div class="likert-statement">31e. My current financial circumstances have influenced at least one ministry-related decision I have made.</div>
+          <div class="likert-options">
+            <label><input type="radio" name="q31e_influenced_decision" value="Strongly Agree" required> Strongly Agree</label>
+            <label><input type="radio" name="q31e_influenced_decision" value="Agree"> Agree</label>
+            <label><input type="radio" name="q31e_influenced_decision" value="Neutral"> Neutral</label>
+            <label><input type="radio" name="q31e_influenced_decision" value="Disagree"> Disagree</label>
+            <label><input type="radio" name="q31e_influenced_decision" value="Strongly Disagree"> Strongly Disagree</label>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- SECTION I: SOLUTIONS -->
+      <fieldset>
+        <legend>SECTION I: Practical Mechanisms and Possible Solutions</legend>
+
+        <label>32. Which financial factors most influence your ability to participate in voluntary ministry? (Select up to three)
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q32_factors_influence" value="Income level"> Income level</label>
+            <label><input type="checkbox" name="q32_factors_influence" value="Financial stability"> Financial stability</label>
+            <label><input type="checkbox" name="q32_factors_influence" value="Budgeting/planning"> Budgeting/planning</label>
+            <label><input type="checkbox" name="q32_factors_influence" value="Savings"> Savings</label>
+            <label><input type="checkbox" name="q32_factors_influence" value="Investments"> Investments</label>
+            <label><input type="checkbox" name="q32_factors_influence" value="Debt obligations"> Debt obligations</label>
+            <label><input type="checkbox" name="q32_factors_influence" value="Family financial responsibilities"> Family financial responsibilities</label>
+            <label><input type="checkbox" name="q32_factors_influence" value="Employment demands"> Employment demands</label>
+            <label><input type="checkbox" name="q32_factors_influence" value="Transportation costs"> Transportation costs</label>
+            <label><input type="checkbox" name="q32_factors_influence" value="Unexpected expenses"> Unexpected expenses</label>
+          </div>
+        </label>
+
+        <label>33. Which initiative would most help Christians improve their financial capacity for ministry?
+          <select name="q33_helpful_initiative" required>
+            <option value="">Select...</option>
+            <option value="Church-based financial education">Church-based financial education</option>
+            <option value="Budgeting and financial-planning seminars">Budgeting and financial-planning seminars</option>
+            <option value="Investment education">Investment education</option>
+            <option value="Debt-management education">Debt-management education</option>
+            <option value="Church-based SACCO/investment group">Church-based SACCO/investment group</option>
+            <option value="Small-business/entrepreneurship mentorship">Small-business/entrepreneurship mentorship</option>
+            <option value="Financial counselling">Financial counselling</option>
+            <option value="Greater transparency in church finances">Greater transparency in church finances</option>
+          </select>
+        </label>
+
+        <label>34. In your opinion, what can individual Christians and churches do to help Christians maintain healthy finances while participating actively in voluntary ministry? (Please provide your thoughts)
+          <textarea name="q34_recommendations" rows="4" placeholder="Share your recommendations here..."></textarea>
         </label>
       </fieldset>
 
-
+      <!-- Contact Info -->
       <fieldset>
-        <legend>Send Options</legend>
-        <label>Optional: Target WhatsApp phone number (E.164)
-          <input type="tel" id="targetPhone" name="targetPhone" data-label="Target phone number" placeholder="+1234567890">
+        <legend>Contact Information (Optional)</legend>
+        <p class="muted">Providing your email helps researchers follow up with you if needed. This information will be kept confidential.</p>
+        <label>Email address (optional):
+          <input type="email" name="email" placeholder="your.email@example.com">
         </label>
-        <p class="muted">Leave empty to let the user choose a contact when WhatsApp opens. Use E.164 format to target a specific number.</p>
+        <label>Phone number (optional):
+          <input type="tel" name="phone" placeholder="+254 (your number)">
+        </label>
       </fieldset>
 
-      <label class="consent"><input type="checkbox" id="consent" required> I consent to share these responses via WhatsApp. I agree to the privacy statement.</label>
-
-      <p class="privacy">Privacy: Responses will be sent directly from your device to WhatsApp; they are not stored on this server. Do not include sensitive personal data.</p>
-
-      <div class="actions">
-        <button type="button" id="sendBtn" disabled>Send Response via WhatsApp</button>
-        <button type="reset" id="resetBtn">Reset</button>
+      <!-- Consent -->
+      <div class="consent-section">
+        <label class="consent"><input type="checkbox" id="consent" required> I have read the instructions and agree to participate in this study. I understand my responses will be treated confidentially and used only for academic purposes.</label>
       </div>
+
+      <!-- Submit -->
+      <div class="actions">
+        <button type="submit" id="submitBtn">Submit Survey Response</button>
+        <button type="reset" id="resetBtn">Clear All Answers</button>
+      </div>
+
     </form>
   </main>
 

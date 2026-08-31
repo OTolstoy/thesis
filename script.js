@@ -1,53 +1,87 @@
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('surveyForm');
   const progress = document.getElementById('progress');
-  const sendBtn = document.getElementById('sendBtn');
+  const progressText = document.getElementById('progressText');
+  const submitBtn = document.getElementById('submitBtn');
   const consent = document.getElementById('consent');
 
+  // Get all required form elements
   function getRequiredElements() {
     return Array.from(form.querySelectorAll('[required]'));
   }
 
+  // Check if an element is filled
   function isFilled(el) {
     if (!el) return false;
     if (el.type === 'checkbox' || el.type === 'radio') return el.checked;
+    if (el.type === 'email' || el.type === 'tel') return String(el.value).trim() !== '';
     return String(el.value).trim() !== '';
   }
 
+  // Update progress bar
   function updateProgress() {
     const required = getRequiredElements();
     const total = required.length || 1;
     const answered = required.reduce((n, el) => n + (isFilled(el) ? 1 : 0), 0);
     const percent = Math.round((answered / total) * 100);
+    
     progress.value = percent;
-    sendBtn.disabled = !(form.checkValidity() && consent.checked);
+    progressText.textContent = `${percent}% Complete`;
+    
+    // Enable submit button only if all required fields filled and consent checked
+    submitBtn.disabled = !(form.checkValidity() && consent.checked);
   }
 
-  function gatherResponses() {
-    const entries = [];
-    const elements = Array.from(form.elements).filter(e => e.name && !e.disabled);
+  // Attach change listeners to all form elements
+  form.addEventListener('change', updateProgress);
+  form.addEventListener('input', updateProgress);
+  consent.addEventListener('change', updateProgress);
 
-    const grouped = {};
-    elements.forEach(el => {
-      const label = el.dataset.label || el.name;
-      if (el.type === 'checkbox') {
-        if (!grouped[label]) grouped[label] = [];
-        if (el.checked) grouped[label].push(el.value || 'on');
-      } else if (el.type === 'radio') {
-        if (el.checked) grouped[label] = el.value;
-      } else if (el.tagName.toLowerCase() === 'select' || el.type === 'text' || el.tagName.toLowerCase() === 'textarea' || el.type === 'number') {
-        if (el.value.trim() !== '') grouped[label] = el.value.trim();
-      }
-    });
+  // Handle form submission
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-    Object.keys(grouped).forEach(k => {
-      const v = Array.isArray(grouped[k]) ? grouped[k].join(', ') : grouped[k];
-      entries.push(`${k}: ${v}`);
-    });
-    return entries.join('\n');
-  }
+    // Validate consent
+    if (!consent.checked) {
+      alert('Please check the consent box before submitting.');
+      return;
+    }
 
-  function sendViaWhatsApp(text) {
+    // Validate all required fields
+    if (!form.checkValidity()) {
+      alert('Please fill out all required fields before submitting.');
+      return;
+    }
+
+    // Disable submit button to prevent double submission
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+
+    try {
+      // Formspree will handle the submission
+      // The form action is already set to the Formspree endpoint
+      form.submit();
+
+      // Show success message
+      setTimeout(() => {
+        alert('Thank you! Your responses have been submitted successfully.\n\nYour contribution to this research is greatly appreciated.');
+        form.reset();
+        updateProgress();
+        submitBtn.textContent = 'Submit Survey Response';
+        submitBtn.disabled = true;
+      }, 1000);
+    } catch (error) {
+      console.error('Submission error:', error);
+      alert('There was an error submitting the form. Please try again.');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Survey Response';
+    }
+  });
+
+  // Initialize progress on page load
+  updateProgress();
+});
+
     const encoded = encodeURIComponent(text);
     // Try native deep link first (mobile), fallback to web URL
     const phoneEl = document.getElementById('targetPhone');
