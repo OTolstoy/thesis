@@ -1,53 +1,121 @@
-# WhatsApp-friendly Financial Questionnaire
+# Kingdom Financial Stewardship & Voluntary Ministry Participation Questionnaire
 
-This is a mobile-first HTML questionnaire designed to collect responses and let users share them via WhatsApp from their device.
+A comprehensive, mobile-first HTML questionnaire designed to collect responses on financial health, planning behaviour, investment practices, debt burden, and voluntary ministry participation among Christians in selected churches in Kakamega County, Western Kenya.
 
-Files added:
+## Overview
 
-- [index.html](index.html) — the form (mobile-first, 12pt font)
-- [styles.css](styles.css) — separated CSS
-- [script.js](script.js) — validation, progress indicator, and WhatsApp message builder
+This questionnaire examines the relationship between:
+- Personal financial health
+- Financial planning behaviour
+- Investment behaviour
+- Debt burden
+- Christians' capacity, willingness, and actual participation in voluntary ministry
 
-Notes about hosting and WhatsApp
+## Files
 
-- WhatsApp cannot host HTML content itself. Host this site on any web server (GitHub Pages recommended) and share the HTTPS link.
-- The form uses a WhatsApp deep link (`whatsapp://send?text=...`) and falls back to the web API (`https://api.whatsapp.com/send?text=...`). On mobile devices the native app will be used; on desktop the web client opens.
+- [index.html](index.html) — Complete questionnaire form (mobile-responsive, 12pt font)
+- [styles.css](styles.css) — Professional, responsive styling
+- [script.js](script.js) — Form validation, progress tracking, and email submission
 
-- New: Optional phone-number targeting — enter an E.164 phone number in the form to open WhatsApp pre-addressed to that number (leave empty to let the user pick a contact).
+## Setup & Configuration
 
-Hosting on GitHub Pages (quick steps)
+### 1. Enable Email Submission with Formspree
 
-1. Create a new Git repository and add these files.
-2. Push to GitHub.
-3. Enable GitHub Pages from repository Settings → Pages and select the `main` branch (or `gh-pages`).
-4. The site will be available at `https://<your-username>.github.io/<repo>/`.
+This form uses **Formspree** to collect and email survey responses to you.
 
-Automated steps (local) — create repo, push, and enable Pages
+**Quick Setup (5 minutes):**
 
-Run these commands in the project folder (replace placeholders):
+1. Go to [https://formspree.io](https://formspree.io)
+2. Sign up for a free account
+3. Create a new form project
+4. Copy your **Form ID** (format: `abc123def456`)
+5. Open `index.html` and find line 28:
+   ```html
+   <form id="surveyForm" method="POST" action="https://formspree.io/f/YOUR_FORM_ID">
+   ```
+6. Replace `YOUR_FORM_ID` with your actual Formspree ID
+7. **Confirm your email** in the Formspree confirmation email
 
-```bash
-git init
-git add .
-git commit -m "Add WhatsApp-friendly questionnaire"
-git branch -M main
-git remote add origin https://github.com/<your-username>/<repo>.git
-git push -u origin main
-```
+Now when respondents submit the form, you'll receive their responses via email automatically!
 
-If you have the GitHub CLI (`gh`) installed you can create and push a repo with:
+### 2. Host on GitHub Pages
 
-```bash
-gh repo create <your-username>/<repo> --public --source=. --remote=origin --push
-```
+Your questionnaire is already pushed to GitHub and ready to be hosted:
 
-Then enable Pages in the repository settings or via `gh`:
+1. Go to your GitHub repository: `https://github.com/OTolstoy/thesis`
+2. Click **Settings** → **Pages**
+3. Under "Build and deployment", select **main** branch
+4. Click **Save**
+5. Your site will be live at: `https://OTolstoy.github.io/thesis/`
 
-```bash
-gh api repos/:owner/:repo/pages -X POST -f source=main
-```
+(Or change the repository settings to enable Pages if not already enabled)
 
-Local testing
+## Questionnaire Sections
+
+- **Section A**: Respondent Profile (age, gender, income source, church membership)
+- **Section B**: Personal Financial Health (7 Likert-scale items)
+- **Section C**: Financial Planning Behaviour (budgeting, monitoring, savings)
+- **Section D**: Investment & Wealth-Creation Behaviour (savings vehicles, investment decisions)
+- **Section E**: Debt Burden (outstanding debt, debt types, financial stress)
+- **Section F**: Capacity to Participate in Voluntary Ministry (time, costs, employment limits)
+- **Section G**: Willingness to Participate in Voluntary Ministry (intentions, flexibility)
+- **Section H**: Actual Participation & Financial Influence (recent changes, contributing factors)
+- **Section I**: Practical Mechanisms & Possible Solutions (financial factors, initiatives, recommendations)
+
+**Contact Information** (optional): Email and phone for follow-up
+
+## Features
+
+✅ **Mobile-first responsive design** — works perfectly on phones, tablets, and desktops  
+✅ **Progress tracking** — visual progress bar shows completion percentage  
+✅ **Form validation** — ensures all required fields are completed before submission  
+✅ **Professional styling** — clean, modern design with accessible controls  
+✅ **Email submission** — responses automatically emailed via Formspree  
+✅ **Privacy-focused** — no data stored on external servers; direct email only  
+✅ **Accessibility** — proper labels, semantic HTML, keyboard navigation  
+
+## Testing Locally
+
+1. Open `index.html` in your browser to review the form layout
+2. Test on a mobile device by accessing the GitHub Pages URL
+
+## Privacy & Consent
+
+- Respondents are asked to consent before submitting
+- Responses are sent directly via email (Formspree)
+- No data is stored on this website server
+- All information is treated confidentially and used only for academic purposes
+- No names are recorded (anonymous)
+
+## Customization
+
+To modify questions or styling:
+
+- **Add/remove questions**: Edit question groups in `index.html`
+- **Change styling**: Modify color variables and styles in `styles.css` (see `:root` variables)
+- **Update title/branding**: Edit the header in `index.html`
+
+## Deployment Checklist
+
+- [ ] Replace `YOUR_FORM_ID` in index.html with your Formspree ID
+- [ ] Confirm your email with Formspree
+- [ ] Enable GitHub Pages in repository settings
+- [ ] Test the form at `https://OTolstoy.github.io/thesis/`
+- [ ] Share the link with respondents
+
+## Support
+
+For issues with:
+- **Form submission**: Check Formspree account settings and confirm your email
+- **GitHub Pages**: Go to Settings → Pages and ensure main branch is selected
+- **Form styling/logic**: Review index.html, styles.css, and script.js
+
+---
+
+**Study Information**  
+Study Area: Selected Churches in Kakamega County, Western Kenya  
+Purpose: Research on Kingdom Financial Stewardship and Voluntary Ministry Participation  
+Last Updated: August 2026
 
 Local testing
 
