@@ -29,11 +29,11 @@ This form uses **Formspree** to collect and email survey responses to you.
 2. Sign up for a free account
 3. Create a new form project
 4. Copy your **Form ID** (format: `abc123def456`)
-5. Open `index.html` and find line 28:
+5. Open `index.html` and find the form tag:
    ```html
-   <form id="surveyForm" method="POST" action="https://formspree.io/f/YOUR_FORM_ID">
+   <form id="surveyForm" method="POST" action="https://formspree.io/f/YOUR_FORM_ID" data-form-id="YOUR_FORM_ID">
    ```
-6. Replace `YOUR_FORM_ID` with your actual Formspree ID
+6. Replace `YOUR_FORM_ID` with your actual Formspree form ID from your Formspree dashboard
 7. **Confirm your email** in the Formspree confirmation email
 
 Now when respondents submit the form, you'll receive their responses via email automatically!

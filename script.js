@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const progressText = document.getElementById('progressText');
   const submitBtn = document.getElementById('submitBtn');
   const consent = document.getElementById('consent');
+  const formHashId = form?.dataset.formId || (form?.action.match(/\/f\/([^/?]+)/) || [])[1] || '';
 
   // Get all required form elements
   function getRequiredElements() {
@@ -39,6 +40,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Handle form submission
   form.addEventListener('submit', (e) => {
+    // Validate Formspree configuration before submission
+    if (!formHashId || formHashId === 'YOUR_FORM_ID' || formHashId === 'myeykrgq') {
+      e.preventDefault();
+      alert('Form not found. Please check the Formspree hashid in index.html and replace YOUR_FORM_ID with your valid form ID.');
+      return;
+    }
+
     // Validate consent
     if (!consent.checked) {
       e.preventDefault();
