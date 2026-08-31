@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>WhatsApp-friendly Financial Questionnaire</title>
+  <link rel="stylesheet" href="styles.css">
+  <meta name="description" content="Mobile-first questionnaire formatted for sharing responses via WhatsApp">
+  <!-- Analytics: set up one of the options below.
+       Option A: Google Analytics (GA4) - paste your Measurement ID into the snippet and uncomment.
+       Option B: Plausible (privacy-friendly) - add your domain and uncomment.
+       Alternatively leave empty to disable analytics on this client. -->
+  <meta name="ga-measurement-id" content="">
+  <!--
+  <script async src="https://www.googletagmanager.com/gtag/js?id=MEASUREMENT_ID"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('config', 'MEASUREMENT_ID', { 'anonymize_ip': true });
+  </script>
+  -->
+  <!-- Plausible example (replace your-domain.com):
+  <script defer data-domain="your-domain.com" src="https://plausible.io/js/plausible.js"></script>
+  -->
+</head>
+<body>
+  <main class="container">
+    <h1>Financial & Ministry Participation Survey</h1>
+
+    <p class="muted">Please answer the questions below. Progress will be shown at the top. All required questions must be completed before sending.</p>
+
+    <progress id="progress" value="0" max="100"></progress>
+
+    <form id="surveyForm">
+      <fieldset>
+        <legend>Personal & Financial Health</legend>
+        <label>1. Age group
+          <select name="age" data-label="Age group" required>
+            <option value="">Select...</option>
+            <option>Under 25</option>
+            <option>25-34</option>
+            <option>35-44</option>
+            <option>45-54</option>
+            <option>55+</option>
+          </select>
+        </label>
+
+        <label>2. Monthly disposable income (approx)
+          <input type="text" name="income" data-label="Monthly disposable income" placeholder="e.g., $200" required>
+        </label>
+
+        <label>3. How would you rate your overall financial health?
+          <select name="fin_health" data-label="Overall financial health" required>
+            <option value="">Select...</option>
+            <option>Poor</option>
+            <option>Fair</option>
+            <option>Good</option>
+            <option>Very good</option>
+            <option>Excellent</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Financial Planning & Investment Behaviour</legend>
+        <label>4. Do you have a written financial plan?
+          <select name="has_plan" data-label="Has written financial plan" required>
+            <option value="">Select...</option>
+            <option>Yes</option>
+            <option>No</option>
+          </select>
+        </label>
+
+        <label>5. How often do you save or invest?
+          <select name="save_freq" data-label="Saving/investing frequency" required>
+            <option value="">Select...</option>
+            <option>Never</option>
+            <option>Occasionally</option>
+            <option>Monthly</option>
+            <option>Weekly</option>
+          </select>
+        </label>
+
+        <label>6. Primary investment types (select all that apply)
+          <div class="checkbox-group" data-label="Primary investment types">
+            <label><input type="checkbox" name="invest_types" value="Savings account"> Savings account</label>
+            <label><input type="checkbox" name="invest_types" value="Stocks"> Stocks</label>
+            <label><input type="checkbox" name="invest_types" value="Bonds"> Bonds</label>
+            <label><input type="checkbox" name="invest_types" value="Real estate"> Real estate</label>
+            <label><input type="checkbox" name="invest_types" value="None"> None</label>
+          </div>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Debt & Burden</legend>
+        <label>7. Total outstanding debt (approx)
+          <input type="text" name="debt" data-label="Total outstanding debt" placeholder="e.g., $5,000" required>
+        </label>
+
+        <label>8. Does debt limit your participation in ministry activities?
+          <select name="debt_impact" data-label="Debt limits ministry participation" required>
+            <option value="">Select...</option>
+            <option>Yes, a lot</option>
+            <option>Somewhat</option>
+            <option>No</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Ministry Participation & Capacity</legend>
+        <label>9. Do you currently participate in ministry activities?
+          <select name="participate" data-label="Currently participate in ministry" required>
+            <option value="">Select...</option>
+            <option>Yes</option>
+            <option>No</option>
+          </select>
+        </label>
+
+        <label>10. If yes, what role(s) do you perform? (brief)
+          <input type="text" name="roles" data-label="Ministry roles" placeholder="e.g., teaching, outreach">
+        </label>
+
+        <label>11. How confident are you in your ministry capacity (skills/time)?
+          <select name="capacity" data-label="Ministry capacity confidence" required>
+            <option value="">Select...</option>
+            <option>Not confident</option>
+            <option>Somewhat confident</option>
+            <option>Confident</option>
+            <option>Very confident</option>
+          </select>
+        </label>
+
+        <label>12. Would you be willing to participate in financially-focused ministry programs?
+          <select name="willingness" data-label="Willingness to participate" required>
+            <option value="">Select...</option>
+            <option>Yes</option>
+            <option>No</option>
+            <option>Maybe</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Practical Solutions & Feedback</legend>
+        <label>13. What practical solutions would help your financial participation? (short answer)
+          <textarea name="solutions" data-label="Practical solutions" rows="3" placeholder="e.g., flexible gifting, microloans"></textarea>
+        </label>
+      </fieldset>
+
+
+      <fieldset>
+        <legend>Send Options</legend>
+        <label>Optional: Target WhatsApp phone number (E.164)
+          <input type="tel" id="targetPhone" name="targetPhone" data-label="Target phone number" placeholder="+1234567890">
+        </label>
+        <p class="muted">Leave empty to let the user choose a contact when WhatsApp opens. Use E.164 format to target a specific number.</p>
+      </fieldset>
+
+      <label class="consent"><input type="checkbox" id="consent" required> I consent to share these responses via WhatsApp. I agree to the privacy statement.</label>
+
+      <p class="privacy">Privacy: Responses will be sent directly from your device to WhatsApp; they are not stored on this server. Do not include sensitive personal data.</p>
+
+      <div class="actions">
+        <button type="button" id="sendBtn" disabled>Send Response via WhatsApp</button>
+        <button type="reset" id="resetBtn">Reset</button>
+      </div>
+    </form>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
