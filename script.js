@@ -4,7 +4,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const progressText = document.getElementById('progressText');
   const submitBtn = document.getElementById('submitBtn');
   const consent = document.getElementById('consent');
-  const formHashId = form?.dataset.formId || (form?.action.match(/\/f\/([^/?]+)/) || [])[1] || '';
+
+  if (!form) {
+    console.error('Survey form not found. Make sure the form id matches the script lookup.');
+    return;
+  }
+
+  const formHashId = form.dataset.formId || (form.action.match(/\/f\/([^/?]+)/) || [])[1] || '';
 
   // Get all required form elements
   function getRequiredElements() {
