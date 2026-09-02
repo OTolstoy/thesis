@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survey Response Analysis Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 40px 30px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 1.1em;
+      opacity: 0.9;
+    }
+
+    .content {
+      padding: 40px 30px;
+    }
+
+    .upload-section {
+      background: #f8f9fa;
+      border: 2px dashed #667eea;
+      border-radius: 8px;
+      padding: 30px;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .upload-section h2 {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 1.5em;
+    }
+
+    .upload-section p {
+      color: #666;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .file-input-wrapper {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    #csvFile {
+      display: none;
+    }
+
+    .file-label {
+      background: #667eea;
+      color: white;
+      padding: 12px 30px;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: background 0.3s;
+      display: inline-block;
+    }
+
+    .file-label:hover {
+      background: #764ba2;
+    }
+
+    #fileStatus {
+      margin-top: 15px;
+      font-size: 1em;
+      color: #666;
+    }
+
+    #fileStatus.success {
+      color: #28a745;
+      font-weight: 600;
+    }
+
+    #fileStatus.error {
+      color: #dc3545;
+      font-weight: 600;
+    }
+
+    .data-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .summary-card {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      border-left: 4px solid #667eea;
+    }
+
+    .summary-card h3 {
+      font-size: 0.9em;
+      color: #666;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .summary-card .value {
+      font-size: 2em;
+      font-weight: 700;
+      color: #333;
+    }
+
+    .charts-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .chart-container {
+      background: #f8f9fa;
+      padding: 25px;
+      border-radius: 8px;
+      position: relative;
+      height: 450px;
+    }
+
+    .chart-container h3 {
+      font-size: 1.1em;
+      color: #333;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .chart-wrapper {
+      position: relative;
+      height: 350px;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9em;
+      color: #666;
+    }
+
+    .legend-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+    }
+
+    .no-data {
+      text-align: center;
+      padding: 60px 20px;
+      color: #999;
+    }
+
+    .no-data-icon {
+      font-size: 3em;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+
+    .no-data p {
+      font-size: 1.1em;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      background: #f8f9fa;
+      padding: 20px 30px;
+      text-align: center;
+      color: #666;
+      border-top: 1px solid #ddd;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 1.8em;
+      }
+
+      .charts-section {
+        grid-template-columns: 1fr;
+      }
+
+      .content {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📊 Survey Response Analysis</h1>
+      <p>Kingdom Financial Stewardship & Voluntary Ministry Questionnaire</p>
+    </header>
+
+    <div class="content">
+      <div class="upload-section">
+        <h2>Upload Response Data</h2>
+        <p>Export your Formspree responses as CSV or copy the JSON data from your email submissions, then upload here to analyze responses.</p>
+        <p style="font-size: 0.9em; color: #999;">Currently supports Likert scale responses (Strongly Agree, Agree, Neutral, Disagree, Strongly Disagree)</p>
+        <div class="file-input-wrapper">
+          <input type="file" id="csvFile" accept=".csv,.json,.txt">
+          <label for="csvFile" class="file-label">Choose File</label>
+        </div>
+        <div id="fileStatus"></div>
+      </div>
+
+      <div class="data-summary" id="summary" style="display: none;">
+        <div class="summary-card">
+          <h3>Total Responses</h3>
+          <div class="value" id="totalResponses">0</div>
+        </div>
+        <div class="summary-card">
+          <h3>Questions Analyzed</h3>
+          <div class="value" id="questionsCount">0</div>
+        </div>
+        <div class="summary-card">
+          <h3>Response Rate</h3>
+          <div class="value" id="responseRate">0%</div>
+        </div>
+      </div>
+
+      <div class="charts-section" id="chartsContainer">
+        <div class="no-data">
+          <div class="no-data-icon">📁</div>
+          <p>No data loaded yet</p>
+          <p style="font-size: 0.95em;">Upload a CSV or JSON file to see analysis charts</p>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>Analysis Dashboard | Study Area: Selected Churches in Kakamega County, Western Kenya</p>
+      <p style="font-size: 0.9em; margin-top: 10px;">Data is processed locally in your browser and never stored or sent anywhere</p>
+    </footer>
+  </div>
+
+  <script>
+    const likertValues = ['Strongly Agree', 'Agree', 'Neutral', 'Disagree', 'Strongly Disagree'];
+    const likertColors = ['#28a745', '#90EE90', '#FFD700', '#FF6B6B', '#DC3545'];
+    const chartInstances = {};
+
+    // Question mapping
+    const likertQuestions = {
+      'q5_meet_obligations': '5. I am generally able to meet my regular financial obligations.',
+      'q6_unexpected_expenses': '6. I can handle unexpected financial expenses without serious financial difficulty.',
+      'q7_basic_needs': '7. I have sufficient financial resources to meet my family\'s basic needs.',
+      'q8_financial_stress': '8. I experience significant financial stress because of my current financial situation.',
+      'q9_available_resources': '9. I have some financial resources available after meeting my essential expenses.',
+      'q10_financial_secure': '10. I feel financially secure about my current situation.',
+      'q11_flexibility': '11. My financial situation allows me some flexibility to support activities beyond basic needs.',
+      'q15a_financial_goals': '15a. I set financial goals for myself or my household.',
+      'q15b_plan_unexpected': '15b. I plan for unexpected financial needs.',
+      'q15c_distinguish_expenses': '15c. I distinguish between essential and non-essential expenditure.',
+      'q15d_review_regularly': '15d. I review my financial situation regularly.',
+      'q15e_planning_helps': '15e. Financial planning helps me manage my resources more effectively.',
+      'q19a_set_aside': '19a. I deliberately set aside resources for long-term financial growth.',
+      'q19b_consider_risks': '19b. I consider the risks before making investment decisions.',
+      'q19c_seek_information': '19c. I seek information before choosing an investment.',
+      'q19d_improved_security': '19d. My investment or saving activities have improved my financial security.',
+      'q19e_increase_investment': '19e. I would like to increase my investment activities in the future.',
+      'q24a_debt_pressure': '24a. Debt repayments place significant pressure on my finances.',
+      'q24b_debt_reduces_money': '24b. Debt reduces the money available for other important needs.',
+      'q24c_debt_affects_ministry': '24c. Debt-related financial stress affects my ability to participate in ministry.',
+      'q24d_debt_prioritize': '24d. Debt obligations sometimes require me to prioritize income-generating activities over ministry.',
+      'q24e_debt_concern': '24e. I am concerned about the long-term effect of my current debt obligations.',
+      'q27a_sufficient_time': '27a. I have sufficient time to participate in voluntary ministry.',
+      'q27b_afford_transport': '27b. I can normally afford transportation costs associated with ministry activities.',
+      'q27c_meet_expenses': '27c. I can meet reasonable personal expenses associated with ministry participation.'
+    };
+
+    document.getElementById('csvFile').addEventListener('change', handleFileUpload);
+
+    function handleFileUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        try {
+          let data = [];
+          const content = event.target.result;
+
+          if (file.name.endsWith('.csv')) {
+            data = parseCSV(content);
+          } else if (file.name.endsWith('.json')) {
+            data = JSON.parse(content);
+            if (!Array.isArray(data)) data = [data];
+          } else {
+            // Try CSV first, then JSON
+            try {
+              data = parseCSV(content);
+              if (data.length === 0) {
+                data = JSON.parse(content);
+                if (!Array.isArray(data)) data = [data];
+              }
+            } catch {
+              data = JSON.parse(content);
+              if (!Array.isArray(data)) data = [data];
+            }
+          }
+
+          if (data.length === 0) {
+            showStatus('No valid responses found in file.', 'error');
+            return;
+          }
+
+          processData(data);
+          showStatus(`Successfully loaded ${data.length} responses!`, 'success');
+        } catch (error) {
+          showStatus(`Error parsing file: ${error.message}`, 'error');
+          console.error(error);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function parseCSV(text) {
+      const lines = text.trim().split('\n');
+      if (lines.length < 2) return [];
+
+      const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+      const data = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(',').map(v => v.trim());
+        const obj = {};
+        headers.forEach((h, idx) => {
+          obj[h] = values[idx] || '';
+        });
+        data.push(obj);
+      }
+
+      return data;
+    }
+
+    function processData(responses) {
+      // Analyze Likert responses
+      const analysis = {};
+
+      Object.keys(likertQuestions).forEach(key => {
+        analysis[key] = {
+          'Strongly Agree': 0,
+          'Agree': 0,
+          'Neutral': 0,
+          'Disagree': 0,
+          'Strongly Disagree': 0,
+          'No Response': 0
+        };
+
+        responses.forEach(response => {
+          const value = response[key] || '';
+          if (likertValues.includes(value)) {
+            analysis[key][value]++;
+          } else if (value === '') {
+            analysis[key]['No Response']++;
+          }
+        });
+      });
+
+      // Update summary
+      document.getElementById('totalResponses').textContent = responses.length;
+      document.getElementById('questionsCount').textContent = Object.keys(analysis).length;
+      document.getElementById('responseRate').textContent = '100%';
+      document.getElementById('summary').style.display = 'grid';
+
+      // Render charts
+      renderCharts(analysis);
+    }
+
+    function renderCharts(analysis) {
+      const container = document.getElementById('chartsContainer');
+      container.innerHTML = '';
+
+      Object.entries(analysis).forEach((entry, index) => {
+        const [key, counts] = entry;
+        const question = likertQuestions[key];
+
+        // Create chart container
+        const chartDiv = document.createElement('div');
+        chartDiv.className = 'chart-container';
+        
+        const chartTitle = document.createElement('h3');
+        chartTitle.textContent = question;
+        chartDiv.appendChild(chartTitle);
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'chart-wrapper';
+        const canvas = document.createElement('canvas');
+        canvas.id = `chart-${index}`;
+        wrapper.appendChild(canvas);
+        chartDiv.appendChild(wrapper);
+
+        container.appendChild(chartDiv);
+
+        // Prepare data
+        const labels = likertValues.filter(v => counts[v] > 0 || counts['No Response'] > 0);
+        const data = labels.map(label => counts[label] || 0);
+        const colors = labels.map((label, i) => {
+          if (label === 'No Response') return '#CCCCCC';
+          return likertColors[likertValues.indexOf(label)];
+        });
+
+        // Create chart
+        const ctx = canvas.getContext('2d');
+        chartInstances[`chart-${index}`] = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: labels,
+            datasets: [{
+              data: data,
+              backgroundColor: colors,
+              borderColor: '#fff',
+              borderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  padding: 15,
+                  font: { size: 12 },
+                  generateLabels: (chart) => {
+                    const data = chart.data;
+                    return data.labels.map((label, i) => ({
+                      text: `${label} (${data.datasets[0].data[i]})`,
+                      fillStyle: data.datasets[0].backgroundColor[i],
+                      hidden: false,
+                      index: i
+                    }));
+                  }
+                }
+              }
+            }
+          }
+        });
+      });
+    }
+
+    function showStatus(message, type) {
+      const statusEl = document.getElementById('fileStatus');
+      statusEl.textContent = message;
+      statusEl.className = type;
+    }
+  </script>
+</body>
+</html>
