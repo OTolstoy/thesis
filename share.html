@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kingdom Financial Stewardship Study | Share & Participate</title>
+  <meta name="description" content="Join our research on financial stewardship and voluntary ministry. Quick questionnaire. Confidential responses.">
+  <meta property="og:title" content="Kingdom Financial Stewardship Study">
+  <meta property="og:description" content="Help shape research on financial health and ministry participation. 15-minute questionnaire.">
+  <meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 630'%3E%3Crect fill='%23667eea' width='1200' height='630'/%3E%3Ctext x='50%' y='50%' font-size='60' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='Arial'%3EKingdom Financial Stewardship%3C/text%3E%3C/svg%3E">
+  <meta property="og:url" content="https://ephraim-okoth.github.io/thesis/">
+  <meta name="twitter:card" content="summary_large_image">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+      width: 100%;
+      padding: 40px 30px;
+      text-align: center;
+    }
+
+    .profile-header {
+      margin-bottom: 30px;
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 50px;
+      margin: 0 auto 20px;
+    }
+
+    h1 {
+      font-size: 1.8em;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 1em;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+
+    .location {
+      color: #999;
+      font-size: 0.9em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      margin-bottom: 25px;
+    }
+
+    .links-section {
+      margin-bottom: 35px;
+    }
+
+    .link-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s;
+      color: white;
+    }
+
+    .link-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .link-button.primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-size: 1.1em;
+      padding: 18px 20px;
+      margin-bottom: 20px;
+    }
+
+    .link-button.tiktok {
+      background: #000;
+    }
+
+    .link-button.instagram {
+      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    }
+
+    .link-button.whatsapp {
+      background: #25D366;
+    }
+
+    .link-button.twitter {
+      background: #1DA1F2;
+    }
+
+    .link-button.facebook {
+      background: #1877F2;
+    }
+
+    .link-button.email {
+      background: #EA4335;
+    }
+
+    .icon {
+      font-size: 1.3em;
+    }
+
+    .copy-link {
+      background: #f0f0f0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .copy-link input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 0.9em;
+      color: #666;
+      font-family: monospace;
+      outline: none;
+    }
+
+    .copy-link button {
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 0.85em;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+
+    .copy-link button:hover {
+      background: #764ba2;
+    }
+
+    .qr-section {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 30px;
+      border-top: 2px solid #eee;
+      padding-top: 30px;
+    }
+
+    .qr-section h3 {
+      font-size: 1em;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    .qr-code {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto;
+      background: white;
+      padding: 8px;
+      border-radius: 8px;
+      border: 2px solid #ddd;
+    }
+
+    .qr-code img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .info-box {
+      background: #f0f4ff;
+      border-left: 4px solid #667eea;
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .info-box strong {
+      color: #333;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .info-box p {
+      color: #666;
+      font-size: 0.9em;
+      line-height: 1.5;
+    }
+
+    footer {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+      color: #999;
+      font-size: 0.85em;
+    }
+
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .social-icons a {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2em;
+      text-decoration: none;
+      transition: transform 0.3s;
+    }
+
+    .social-icons a:hover {
+      transform: scale(1.15);
+    }
+
+    .social-icons .tiktok {
+      background: #000;
+      color: white;
+    }
+
+    .social-icons .instagram {
+      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      color: white;
+    }
+
+    .social-icons .whatsapp {
+      background: #25D366;
+      color: white;
+    }
+
+    .social-icons .twitter {
+      background: #1DA1F2;
+      color: white;
+    }
+
+    .social-icons .facebook {
+      background: #1877F2;
+      color: white;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 30px 20px;
+      }
+
+      h1 {
+        font-size: 1.5em;
+      }
+
+      .link-button {
+        padding: 14px 16px;
+        font-size: 0.95em;
+      }
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-size: 0.9em;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="profile-header">
+      <div class="avatar">📊</div>
+      <h1>Kingdom Financial Stewardship Study</h1>
+      <p class="subtitle">Research on Financial Health & Voluntary Ministry Participation</p>
+      <p class="location">📍 Kakamega County, Western Kenya</p>
+    </div>
+
+    <div class="info-box">
+      <strong>✨ Help Us With Your Insights!</strong>
+      <p>Participate in our confidential research questionnaire. Takes 15 minutes. No personal information recorded.</p>
+    </div>
+
+    <div class="links-section">
+      <a href="https://ephraim-okoth.github.io/thesis/" class="link-button primary" target="_blank">
+        <span class="icon">📋</span>
+        <span>Start Questionnaire</span>
+      </a>
+
+      <!-- Direct Share Links -->
+      <div style="margin-top: 25px; margin-bottom: 15px; font-size: 0.9em; color: #999; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Share This Study</div>
+
+      <a href="https://www.tiktok.com/share?url=https://ephraim-okoth.github.io/thesis/" class="link-button tiktok" target="_blank">
+        <span class="icon">🎵</span>
+        <span>Share on TikTok</span>
+      </a>
+
+      <a href="https://www.instagram.com/?url=https://ephraim-okoth.github.io/thesis/" class="link-button instagram" target="_blank">
+        <span class="icon">📸</span>
+        <span>Share on Instagram</span>
+      </a>
+
+      <a href="https://wa.me/?text=Help%20with%20research%3A%20Kingdom%20Financial%20Stewardship%20Study%20https://ephraim-okoth.github.io/thesis/" class="link-button whatsapp" target="_blank">
+        <span class="icon">💬</span>
+        <span>Share on WhatsApp</span>
+      </a>
+
+      <a href="https://twitter.com/intent/tweet?text=I'm%20participating%20in%20research%20on%20financial%20stewardship%20and%20ministry%20participation.%20Join%20me%3A%20https://ephraim-okoth.github.io/thesis/" class="link-button twitter" target="_blank">
+        <span class="icon">𝕏</span>
+        <span>Share on Twitter/X</span>
+      </a>
+
+      <a href="https://www.facebook.com/sharer/sharer.php?u=https://ephraim-okoth.github.io/thesis/" class="link-button facebook" target="_blank">
+        <span class="icon">👥</span>
+        <span>Share on Facebook</span>
+      </a>
+
+      <a href="mailto:?subject=Kingdom%20Financial%20Stewardship%20Study&body=Help%20with%20research%20on%20financial%20stewardship%20and%20voluntary%20ministry%20participation%3A%0A%0Ahttps://ephraim-okoth.github.io/thesis/" class="link-button email">
+        <span class="icon">✉️</span>
+        <span>Share via Email</span>
+      </a>
+    </div>
+
+    <div class="copy-link">
+      <input type="text" id="linkInput" value="https://ephraim-okoth.github.io/thesis/" readonly>
+      <button onclick="copyLink()">Copy</button>
+    </div>
+
+    <!-- Analysis Dashboard Link -->
+    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
+      <p style="color: #666; font-size: 0.9em; margin-bottom: 12px;">📊 Research Team?</p>
+      <a href="https://ephraim-okoth.github.io/thesis/analysis.html" style="color: #667eea; text-decoration: none; font-weight: 600; display: inline-block; padding: 8px 16px; background: #f0f4ff; border-radius: 6px; transition: all 0.3s;" onmouseover="this.style.background='#e0e8ff'" onmouseout="this.style.background='#f0f4ff'">
+        View Analysis Dashboard →
+      </a>
+    </div>
+
+    <!-- QR Code Section -->
+    <div class="qr-section">
+      <h3>Scan to Participate</h3>
+      <div class="qr-code">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://ephraim-okoth.github.io/thesis/" alt="QR Code to thesis form">
+      </div>
+    </div>
+
+    <footer>
+      <p><strong>Study Information</strong></p>
+      <p>Kingdom Financial Stewardship & Voluntary Ministry Participation Research<br>Selected Churches in Kakamega County, Western Kenya</p>
+      <p style="margin-top: 15px;">All responses are confidential and used for academic purposes only.</p>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    function copyLink() {
+      const linkInput = document.getElementById('linkInput');
+      linkInput.select();
+      document.execCommand('copy');
+      
+      // Show toast
+      const toast = document.getElementById('toast');
+      toast.textContent = '✓ Link copied to clipboard!';
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // Check if page is shared
+    if (navigator.share) {
+      console.log('Web Share API supported');
+    }
+  </script>
+</body>
+</html>
