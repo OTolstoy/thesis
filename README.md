@@ -42,11 +42,11 @@ Now when respondents submit the form, you'll receive their responses via email a
 
 Your questionnaire is already pushed to GitHub and ready to be hosted:
 
-1. Go to your GitHub repository: `https://github.com/OTolstoy/thesis`
+1. Go to your GitHub repository: `https://github.com/ephraim-okoth/thesis`
 2. Click **Settings** → **Pages**
 3. Under "Build and deployment", select **main** branch
 4. Click **Save**
-5. Your site will be live at: `https://OTolstoy.github.io/thesis/`
+5. Your site will be live at: `https://ephraim-okoth.github.io/thesis/`
 
 (Or change the repository settings to enable Pages if not already enabled)
 
@@ -100,7 +100,7 @@ To modify questions or styling:
 - [ ] Replace `YOUR_FORM_ID` in index.html with your Formspree ID
 - [ ] Confirm your email with Formspree
 - [ ] Enable GitHub Pages in repository settings
-- [ ] Test the form at `https://OTolstoy.github.io/thesis/`
+- [ ] Test the form at `https://ephraim-okoth.github.io/thesis/`
 - [ ] Share the link with respondents
 
 ## Support
