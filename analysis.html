@@ -385,6 +385,71 @@
       font-weight: 700;
     }
 
+    .mindset-card {
+      grid-column: 1 / -1;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid #dfe7f3;
+      border-radius: 12px;
+      padding: 18px 16px;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+    }
+
+    .mindset-card h3 {
+      font-size: 1rem;
+      color: #1f2937;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .mindset-card p {
+      color: #64748b;
+      font-size: 0.8rem;
+      margin-bottom: 14px;
+    }
+
+    .mindset-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px 16px;
+    }
+
+    .mindset-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      color: #475569;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .mindset-row strong {
+      color: #0f172a;
+      font-size: 0.78rem;
+    }
+
+    .mindset-row small {
+      display: block;
+      color: #64748b;
+      font-size: 0.68rem;
+      font-weight: 500;
+      line-height: 1.4;
+      margin-top: 2px;
+    }
+
+    .mindset-track {
+      grid-column: 1 / -1;
+      height: 7px;
+      background: #e8eef5;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .mindset-fill {
+      height: 100%;
+      border-radius: inherit;
+    }
+
     .sentiment-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -714,6 +779,18 @@
         }
       }
 
+      // Formspree exports may replace internal names with numbered question text.
+      const questionNumber = key.match(/^q(\d+[a-z]?)/i);
+      if (questionNumber) {
+        const numberPrefix = questionNumber[1].toLowerCase();
+        for (const [fieldName, fieldValue] of responseEntries) {
+          const fieldKey = normalizeFieldName(fieldName);
+          if (fieldKey.startsWith(numberPrefix)) {
+            return fieldValue;
+          }
+        }
+      }
+
       return '';
     }
 
@@ -757,14 +834,43 @@
 
       if (lines.length < 2) return rows;
 
-      const headers = lines[0].split(',').map(cell => normalizeFieldName(cell.replace(/^"|"$/g, '')));
+      function parseCSVLine(line) {
+        const values = [];
+        let value = '';
+        let inQuotes = false;
+
+        for (let i = 0; i < line.length; i++) {
+          const char = line[i];
+          const next = line[i + 1];
+
+          if (char === '"') {
+            if (inQuotes && next === '"') {
+              value += '"';
+              i++;
+            } else {
+              inQuotes = !inQuotes;
+            }
+          } else if (char === ',' && !inQuotes) {
+            values.push(value.trim());
+            value = '';
+          } else {
+            value += char;
+          }
+        }
+
+        values.push(value.trim());
+        return values;
+      }
+
+      const headers = parseCSVLine(lines[0].replace(/^\uFEFF/, ''))
+        .map(cell => normalizeFieldName(cell));
 
       for (let i = 1; i < lines.length; i++) {
-        const values = lines[i].split(',');
+        const values = parseCSVLine(lines[i]);
         const row = {};
         headers.forEach((header, index) => {
           if (!header) return;
-          const rawValue = values[index] !== undefined ? values[index].replace(/^"|"$/g, '').trim() : '';
+          const rawValue = values[index] !== undefined ? values[index] : '';
           row[header] = rawValue;
         });
 
@@ -821,6 +927,18 @@
 
     function processData(responses) {
       const analysis = {};
+      const mindsetGroups = new Map();
+
+      responses.forEach(response => {
+        const answers = Object.keys(likertQuestions).map(key => {
+          const raw = getResponseValue(response, key);
+          return matchLikertValue(raw) || 'No Response';
+        });
+        const signature = answers.join('|');
+        const group = mindsetGroups.get(signature) || { answers, count: 0 };
+        group.count++;
+        mindsetGroups.set(signature, group);
+      });
 
       Object.keys(likertQuestions).forEach(key => {
         analysis[key] = {
@@ -850,10 +968,10 @@
       document.getElementById('responseRate').textContent = totalResponses > 0 ? '100%' : '0%';
       document.getElementById('summary').style.display = 'grid';
 
-      renderCharts(analysis);
+      renderCharts(analysis, [...mindsetGroups.values()]);
     }
 
-    function renderCharts(analysis) {
+    function renderCharts(analysis, mindsetGroups) {
       const container = document.getElementById('chartsContainer');
       container.innerHTML = '';
 
@@ -890,6 +1008,37 @@
         </div>
       `;
       container.appendChild(sentimentCard);
+
+      const mindsetCard = document.createElement('div');
+      mindsetCard.className = 'mindset-card';
+      const totalRespondents = mindsetGroups.reduce((total, group) => total + group.count, 0);
+      const visibleGroups = mindsetGroups.sort((a, b) => b.count - a.count).slice(0, 8);
+      const mindsetRows = visibleGroups.map((group, index) => {
+        const percentage = totalRespondents > 0 ? (group.count / totalRespondents) * 100 : 0;
+        const summary = group.answers.reduce((counts, answer) => {
+          counts[answer] = (counts[answer] || 0) + 1;
+          return counts;
+        }, {});
+        const summaryText = Object.entries(summary)
+          .filter(([label]) => label !== 'No Response')
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 2)
+          .map(([label, count]) => `${label} (${count})`)
+          .join(', ') || 'No answered Likert items';
+        const color = likertColors[index % likertColors.length];
+        return `
+          <div class="mindset-row">
+            <span>Mindset ${index + 1}<small>${summaryText}</small></span><strong>${percentage.toFixed(1)}% (${group.count})</strong>
+            <div class="mindset-track"><div class="mindset-fill" style="width: ${percentage}%; background: ${color};"></div></div>
+          </div>
+        `;
+      }).join('');
+      mindsetCard.innerHTML = `
+        <h3>Overall Mindset Groups</h3>
+        <p>Respondents with the same answer pattern are grouped together. Showing the eight largest groups.</p>
+        <div class="mindset-list">${mindsetRows}</div>
+      `;
+      container.appendChild(mindsetCard);
 
       chartEntries.forEach(([key, counts], index) => {
         const question = likertQuestions[key];
