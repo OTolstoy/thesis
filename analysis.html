@@ -283,36 +283,118 @@
     const likertColors = ['#28a745', '#90EE90', '#FFD700', '#FF6B6B', '#DC3545'];
     const chartInstances = {};
 
-    // Question mapping
     const likertQuestions = {
-      'q5_meet_obligations': '5. I am generally able to meet my regular financial obligations.',
-      'q6_unexpected_expenses': '6. I can handle unexpected financial expenses without serious financial difficulty.',
-      'q7_basic_needs': '7. I have sufficient financial resources to meet my family\'s basic needs.',
-      'q8_financial_stress': '8. I experience significant financial stress because of my current financial situation.',
-      'q9_available_resources': '9. I have some financial resources available after meeting my essential expenses.',
-      'q10_financial_secure': '10. I feel financially secure about my current situation.',
-      'q11_flexibility': '11. My financial situation allows me some flexibility to support activities beyond basic needs.',
-      'q15a_financial_goals': '15a. I set financial goals for myself or my household.',
-      'q15b_plan_unexpected': '15b. I plan for unexpected financial needs.',
-      'q15c_distinguish_expenses': '15c. I distinguish between essential and non-essential expenditure.',
-      'q15d_review_regularly': '15d. I review my financial situation regularly.',
-      'q15e_planning_helps': '15e. Financial planning helps me manage my resources more effectively.',
-      'q19a_set_aside': '19a. I deliberately set aside resources for long-term financial growth.',
-      'q19b_consider_risks': '19b. I consider the risks before making investment decisions.',
-      'q19c_seek_information': '19c. I seek information before choosing an investment.',
-      'q19d_improved_security': '19d. My investment or saving activities have improved my financial security.',
-      'q19e_increase_investment': '19e. I would like to increase my investment activities in the future.',
-      'q24a_debt_pressure': '24a. Debt repayments place significant pressure on my finances.',
-      'q24b_debt_reduces_money': '24b. Debt reduces the money available for other important needs.',
-      'q24c_debt_affects_ministry': '24c. Debt-related financial stress affects my ability to participate in ministry.',
-      'q24d_debt_prioritize': '24d. Debt obligations sometimes require me to prioritize income-generating activities over ministry.',
-      'q24e_debt_concern': '24e. I am concerned about the long-term effect of my current debt obligations.',
-      'q27a_sufficient_time': '27a. I have sufficient time to participate in voluntary ministry.',
-      'q27b_afford_transport': '27b. I can normally afford transportation costs associated with ministry activities.',
-      'q27c_meet_expenses': '27c. I can meet reasonable personal expenses associated with ministry participation.'
+      q5_meet_obligations: '5. I am generally able to meet my regular financial obligations.',
+      q6_unexpected_expenses: '6. I can handle unexpected financial expenses without serious financial difficulty.',
+      q7_basic_needs: '7. I have sufficient financial resources to meet my family\'s basic needs.',
+      q8_financial_stress: '8. I experience significant financial stress because of my current financial situation.',
+      q9_available_resources: '9. I have some financial resources available after meeting my essential expenses.',
+      q10_financial_secure: '10. I feel financially secure about my current situation.',
+      q11_flexibility: '11. My financial situation allows me some flexibility to support activities beyond basic needs.',
+      q15a_financial_goals: '15a. I set financial goals for myself or my household.',
+      q15b_plan_unexpected: '15b. I plan for unexpected financial needs.',
+      q15c_distinguish_expenses: '15c. I distinguish between essential and non-essential expenditure.',
+      q15d_review_regularly: '15d. I review my financial situation regularly.',
+      q15e_planning_helps: '15e. Financial planning helps me manage my resources more effectively.',
+      q19a_set_aside: '19a. I deliberately set aside resources for long-term financial growth.',
+      q19b_consider_risks: '19b. I consider the risks before making investment decisions.',
+      q19c_seek_information: '19c. I seek information before choosing an investment.',
+      q19d_improved_security: '19d. My investment or saving activities have improved my financial security.',
+      q19e_increase_investment: '19e. I would like to increase my investment activities in the future.',
+      q24a_debt_pressure: '24a. Debt repayments place significant pressure on my finances.',
+      q24b_debt_reduces_money: '24b. Debt reduces the money available for other important needs.',
+      q24c_debt_affects_ministry: '24c. Debt-related financial stress affects my ability to participate in ministry.',
+      q24d_debt_prioritize: '24d. Debt obligations sometimes require me to prioritize income-generating activities over ministry.',
+      q24e_debt_concern: '24e. I am concerned about the long-term effect of my current debt obligations.',
+      q27a_sufficient_time: '27a. I have sufficient time to participate in voluntary ministry.',
+      q27b_afford_transport: '27b. I can normally afford transportation costs associated with ministry activities.',
+      q27c_meet_expenses: '27c. I can meet reasonable personal expenses associated with ministry participation.',
+      q27d_employment_limits: '27d. My employment or business responsibilities limit my ministry involvement.',
+      q27e_family_limits: '27e. My family financial responsibilities affect my ability to participate in ministry.',
+      q27f_financial_flexibility: '27f. My financial situation gives me sufficient flexibility to participate in ministry.',
+      q28a_desire_participate: '28a. I desire to participate actively in voluntary ministry.',
+      q28b_accept_responsibilities: '28b. I am willing to accept additional voluntary ministry responsibilities when needed.',
+      q28c_intend_continue: '28c. I intend to continue participating in voluntary ministry.',
+      q28d_difficulties_reduce: '28d. Financial difficulties sometimes reduce my willingness to participate in ministry.',
+      q28e_willing_despite_difficult: '28e. I remain willing to serve even when my financial circumstances are difficult.',
+      q28f_more_if_reduced: '28f. I would participate more actively if some of my financial constraints were reduced.',
+      q31a_financial_affects: '31a. My financial situation affects how frequently I participate in voluntary ministry.',
+      q31b_better_planning: '31b. Better financial planning would make it easier for me to participate consistently in ministry.',
+      q31c_stability_increase: '31c. Greater financial stability would increase my capacity to serve in ministry.',
+      q31d_debt_reduction: '31d. Debt reduction would make it easier for me to participate in ministry.',
+      q31e_influenced_decision: '31e. My current financial circumstances have influenced at least one ministry-related decision I have made.'
     };
 
     document.getElementById('csvFile').addEventListener('change', handleFileUpload);
+
+    function normalizeFieldName(key) {
+      if (!key) return '';
+      return String(key).trim().toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+    }
+
+    function sanitizeValue(value) {
+      if (value === null || value === undefined) return '';
+      return String(value).trim();
+    }
+
+    function parseCSV(text) {
+      const rows = [];
+      if (!text || !text.trim()) return rows;
+
+      const lines = [];
+      let currentLine = '';
+      let inQuotes = false;
+
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        const next = text[i + 1];
+
+        if (char === '"') {
+          if (inQuotes && next === '"') {
+            currentLine += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === ',' && !inQuotes) {
+          currentLine += ',';
+        } else if ((char === '\n' || char === '\r') && !inQuotes) {
+          if (char === '\r' && next === '\n') {
+            i++;
+          }
+          if (currentLine.trim() !== '') {
+            lines.push(currentLine);
+          }
+          currentLine = '';
+        } else {
+          currentLine += char;
+        }
+      }
+
+      if (currentLine.trim() !== '') {
+        lines.push(currentLine);
+      }
+
+      if (lines.length < 2) return rows;
+
+      const headers = lines[0].split(',').map(cell => normalizeFieldName(cell.replace(/^"|"$/g, '')));
+
+      for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(',');
+        const row = {};
+        headers.forEach((header, index) => {
+          if (!header) return;
+          const rawValue = values[index] !== undefined ? values[index].replace(/^"|"$/g, '').trim() : '';
+          row[header] = rawValue;
+        });
+
+        if (Object.keys(row).some(key => row[key] !== '')) {
+          rows.push(row);
+        }
+      }
+
+      return rows;
+    }
 
     function handleFileUpload(e) {
       const file = e.target.files[0];
@@ -327,19 +409,18 @@
           if (file.name.endsWith('.csv')) {
             data = parseCSV(content);
           } else if (file.name.endsWith('.json')) {
-            data = JSON.parse(content);
-            if (!Array.isArray(data)) data = [data];
+            const parsed = JSON.parse(content);
+            data = Array.isArray(parsed) ? parsed : [parsed];
           } else {
-            // Try CSV first, then JSON
             try {
               data = parseCSV(content);
               if (data.length === 0) {
-                data = JSON.parse(content);
-                if (!Array.isArray(data)) data = [data];
+                const parsed = JSON.parse(content);
+                data = Array.isArray(parsed) ? parsed : [parsed];
               }
             } catch {
-              data = JSON.parse(content);
-              if (!Array.isArray(data)) data = [data];
+              const parsed = JSON.parse(content);
+              data = Array.isArray(parsed) ? parsed : [parsed];
             }
           }
 
@@ -358,27 +439,7 @@
       reader.readAsText(file);
     }
 
-    function parseCSV(text) {
-      const lines = text.trim().split('\n');
-      if (lines.length < 2) return [];
-
-      const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
-      const data = [];
-
-      for (let i = 1; i < lines.length; i++) {
-        const values = lines[i].split(',').map(v => v.trim());
-        const obj = {};
-        headers.forEach((h, idx) => {
-          obj[h] = values[idx] || '';
-        });
-        data.push(obj);
-      }
-
-      return data;
-    }
-
     function processData(responses) {
-      // Analyze Likert responses
       const analysis = {};
 
       Object.keys(likertQuestions).forEach(key => {
@@ -392,7 +453,8 @@
         };
 
         responses.forEach(response => {
-          const value = response[key] || '';
+          const raw = response[key] ?? response[normalizeFieldName(key)] ?? response[key.toLowerCase()] ?? '';
+          const value = sanitizeValue(raw).replace(/\s+/g, ' ');
           if (likertValues.includes(value)) {
             analysis[key][value]++;
           } else if (value === '') {
@@ -401,13 +463,12 @@
         });
       });
 
-      // Update summary
-      document.getElementById('totalResponses').textContent = responses.length;
+      const totalResponses = responses.length;
+      document.getElementById('totalResponses').textContent = totalResponses;
       document.getElementById('questionsCount').textContent = Object.keys(analysis).length;
-      document.getElementById('responseRate').textContent = '100%';
+      document.getElementById('responseRate').textContent = totalResponses > 0 ? '100%' : '0%';
       document.getElementById('summary').style.display = 'grid';
 
-      // Render charts
       renderCharts(analysis);
     }
 
@@ -415,14 +476,19 @@
       const container = document.getElementById('chartsContainer');
       container.innerHTML = '';
 
-      Object.entries(analysis).forEach((entry, index) => {
-        const [key, counts] = entry;
+      const chartEntries = Object.entries(analysis).filter(([key]) => likertQuestions[key]);
+
+      if (chartEntries.length === 0) {
+        container.innerHTML = '<div class="no-data"><div class="no-data-icon">📁</div><p>No valid Likert response data found</p><p style="font-size: 0.95em;">Upload a CSV or JSON file with the questionnaire fields to generate charts.</p></div>';
+        return;
+      }
+
+      chartEntries.forEach(([key, counts], index) => {
         const question = likertQuestions[key];
 
-        // Create chart container
         const chartDiv = document.createElement('div');
         chartDiv.className = 'chart-container';
-        
+
         const chartTitle = document.createElement('h3');
         chartTitle.textContent = question;
         chartDiv.appendChild(chartTitle);
@@ -436,22 +502,20 @@
 
         container.appendChild(chartDiv);
 
-        // Prepare data
-        const labels = likertValues.filter(v => counts[v] > 0 || counts['No Response'] > 0);
+        const labels = likertValues.filter(label => counts[label] > 0 || counts['No Response'] > 0);
         const data = labels.map(label => counts[label] || 0);
-        const colors = labels.map((label, i) => {
+        const colors = labels.map((label) => {
           if (label === 'No Response') return '#CCCCCC';
           return likertColors[likertValues.indexOf(label)];
         });
 
-        // Create chart
         const ctx = canvas.getContext('2d');
         chartInstances[`chart-${index}`] = new Chart(ctx, {
           type: 'doughnut',
           data: {
             labels: labels,
             datasets: [{
-              data: data,
+              data,
               backgroundColor: colors,
               borderColor: '#fff',
               borderWidth: 2
@@ -467,12 +531,12 @@
                   padding: 15,
                   font: { size: 12 },
                   generateLabels: (chart) => {
-                    const data = chart.data;
-                    return data.labels.map((label, i) => ({
-                      text: `${label} (${data.datasets[0].data[i]})`,
-                      fillStyle: data.datasets[0].backgroundColor[i],
+                    const dataset = chart.data.datasets[0];
+                    return chart.data.labels.map((label, idx) => ({
+                      text: `${label} (${dataset.data[idx]})`,
+                      fillStyle: dataset.backgroundColor[idx],
                       hidden: false,
-                      index: i
+                      index: idx
                     }));
                   }
                 }
