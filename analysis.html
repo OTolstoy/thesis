@@ -670,6 +670,53 @@
       return String(value).trim();
     }
 
+    function canonicalizeAnswer(value) {
+      return sanitizeValue(value)
+        .toLowerCase()
+        .replace(/[^a-z]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function matchLikertValue(value) {
+      const normalized = canonicalizeAnswer(value);
+      const matchMap = {
+        'strongly agree': 'Strongly Agree',
+        'agree': 'Agree',
+        'neutral': 'Neutral',
+        'disagree': 'Disagree',
+        'strongly disagree': 'Strongly Disagree'
+      };
+      return matchMap[normalized] || null;
+    }
+
+    function getResponseValue(response, key) {
+      const keyVariants = new Set([
+        key,
+        normalizeFieldName(key),
+        key.toLowerCase(),
+        key.replace(/_/g, ''),
+        normalizeFieldName(key.replace(/_/g, '')),
+        key.replace(/[^a-z0-9]/gi, '').toLowerCase()
+      ]);
+
+      for (const candidate of keyVariants) {
+        if (candidate && Object.prototype.hasOwnProperty.call(response, candidate)) {
+          return response[candidate];
+        }
+      }
+
+      const responseEntries = Object.entries(response || {});
+      for (const [fieldName, fieldValue] of responseEntries) {
+        const fieldKey = normalizeFieldName(fieldName);
+        if (fieldKey && keyVariants.has(fieldKey)) {
+          return fieldValue;
+        }
+      }
+
+      return '';
+    }
+
     function parseCSV(text) {
       const rows = [];
       if (!text || !text.trim()) return rows;
@@ -786,8 +833,9 @@
         };
 
         responses.forEach(response => {
-          const raw = response[key] ?? response[normalizeFieldName(key)] ?? response[key.toLowerCase()] ?? '';
-          const value = sanitizeValue(raw).replace(/\s+/g, ' ');
+          const raw = getResponseValue(response, key);
+          const value = matchLikertValue(raw) || sanitizeValue(raw).replace(/\s+/g, ' ');
+
           if (likertValues.includes(value)) {
             analysis[key][value]++;
           } else if (value === '') {
