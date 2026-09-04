@@ -795,11 +795,16 @@
 
       // Formspree exports may replace internal names with numbered question text.
       const questionNumber = key.match(/^q(\d+[a-z]?)/i);
+      const questionText = normalizeFieldName(likertQuestions[key].replace(/^\d+[a-z]?\.\s*/i, ''));
       if (questionNumber) {
         const numberPrefix = questionNumber[1].toLowerCase();
         for (const [fieldName, fieldValue] of responseEntries) {
           const fieldKey = normalizeFieldName(fieldName);
-          if (fieldKey.startsWith(numberPrefix) || fieldKey.startsWith(`q${numberPrefix}`)) {
+          if (
+            fieldKey.startsWith(numberPrefix) ||
+            fieldKey.startsWith(`q${numberPrefix}`) ||
+            fieldKey.includes(questionText)
+          ) {
             return fieldValue;
           }
         }
