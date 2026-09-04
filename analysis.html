@@ -543,7 +543,7 @@
             <div class="toolbar">
               <div class="toolbar-title">
                 <span class="icon">▣</span>
-                <span>Preliminary Results (Simulated Data)</span>
+                <span>Mindset Distribution by Question</span>
               </div>
 
               <div class="toolbar-controls">
@@ -910,8 +910,11 @@
 
         container.appendChild(chartDiv);
 
-        const labels = likertValues.filter(label => counts[label] > 0 || counts['No Response'] > 0);
+        const labels = likertValues.filter(label => counts[label] > 0);
+        if (counts['No Response'] > 0) labels.push('No Response');
+        const totalAnswers = labels.reduce((total, label) => total + (counts[label] || 0), 0);
         const data = labels.map(label => counts[label] || 0);
+        const percentages = data.map(count => totalAnswers > 0 ? (count / totalAnswers) * 100 : 0);
         const colors = labels.map((label) => {
           if (label === 'No Response') return '#CCCCCC';
           return likertColors[likertValues.indexOf(label)];
@@ -946,7 +949,7 @@
                   generateLabels: (chart) => {
                     const dataset = chart.data.datasets[0];
                     return chart.data.labels.map((label, idx) => ({
-                      text: `${label} (${dataset.data[idx]})`,
+                      text: `${label} (${percentages[idx].toFixed(1)}%)`,
                       fillStyle: dataset.backgroundColor[idx],
                       strokeStyle: '#fff',
                       lineWidth: 2,
@@ -958,7 +961,7 @@
               },
               tooltip: {
                 callbacks: {
-                  label: (context) => `${context.label}: ${context.parsed}`
+                  label: (context) => `${context.label}: ${context.parsed} response${context.parsed === 1 ? '' : 's'} (${percentages[context.dataIndex].toFixed(1)}%)`
                 }
               }
             }
