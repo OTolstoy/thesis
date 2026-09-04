@@ -1027,7 +1027,7 @@
       const mindsetCard = document.createElement('div');
       mindsetCard.className = 'mindset-card';
       const totalRespondents = mindsetGroups.reduce((total, group) => total + group.count, 0);
-      const visibleGroups = mindsetGroups.sort((a, b) => b.count - a.count).slice(0, 8);
+      const visibleGroups = mindsetGroups.sort((a, b) => b.count - a.count);
       const mindsetRows = visibleGroups.map((group, index) => {
         const percentage = totalRespondents > 0 ? (group.count / totalRespondents) * 100 : 0;
         const summary = group.answers.reduce((counts, answer) => {
@@ -1050,7 +1050,7 @@
       }).join('');
       mindsetCard.innerHTML = `
         <h3>Overall Mindset Groups</h3>
-        <p>Respondents with the same answer pattern are grouped together. Showing the eight largest groups.</p>
+        <p>Respondents with the same answer pattern are grouped together. Showing all ${visibleGroups.length} groups.</p>
         <div class="mindset-list">${mindsetRows}</div>
       `;
       container.appendChild(mindsetCard);
