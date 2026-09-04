@@ -800,9 +800,11 @@
         const numberPrefix = questionNumber[1].toLowerCase();
         for (const [fieldName, fieldValue] of responseEntries) {
           const fieldKey = normalizeFieldName(fieldName);
+          const exportedQuestionNumber = String(fieldName).match(/(?:question\s*)?(\d+[a-z]?)(?:[\s.:_-]|$)/i);
           if (
             fieldKey.startsWith(numberPrefix) ||
             fieldKey.startsWith(`q${numberPrefix}`) ||
+            (exportedQuestionNumber && exportedQuestionNumber[1].toLowerCase() === numberPrefix) ||
             fieldKey.includes(questionText)
           ) {
             return fieldValue;
@@ -854,7 +856,7 @@
 
       if (lines.length < 2) return rows;
 
-      function parseCSVLine(line) {
+      function parseCSVLine(line, delimiter) {
         const values = [];
         let value = '';
         let inQuotes = false;
@@ -870,7 +872,7 @@
             } else {
               inQuotes = !inQuotes;
             }
-          } else if (char === ',' && !inQuotes) {
+          } else if (char === delimiter && !inQuotes) {
             values.push(value.trim());
             value = '';
           } else {
@@ -882,11 +884,16 @@
         return values;
       }
 
-      const headers = parseCSVLine(lines[0].replace(/^\uFEFF/, ''))
+      const firstLine = lines[0].replace(/^\uFEFF/, '');
+      const delimiters = [',', ';', '\t', '|'];
+      const delimiter = delimiters
+        .map(candidate => ({ candidate, count: parseCSVLine(firstLine, candidate).length }))
+        .sort((a, b) => b.count - a.count)[0].candidate;
+      const headers = parseCSVLine(firstLine, delimiter)
         .map(cell => normalizeFieldName(cell));
 
       for (let i = 1; i < lines.length; i++) {
-        const values = parseCSVLine(lines[i]);
+        const values = parseCSVLine(lines[i], delimiter);
         const row = {};
         headers.forEach((header, index) => {
           if (!header) return;
