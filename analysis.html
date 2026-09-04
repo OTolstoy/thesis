@@ -750,9 +750,23 @@
         'agree': 'Agree',
         'neutral': 'Neutral',
         'disagree': 'Disagree',
-        'strongly disagree': 'Strongly Disagree'
+        'strongly disagree': 'Strongly Disagree',
+        'sa': 'Strongly Agree',
+        'a': 'Agree',
+        'n': 'Neutral',
+        'd': 'Disagree',
+        'sd': 'Strongly Disagree'
       };
-      return matchMap[normalized] || null;
+      if (matchMap[normalized]) return matchMap[normalized];
+
+      const numericMap = {
+        '1': 'Strongly Disagree',
+        '2': 'Disagree',
+        '3': 'Neutral',
+        '4': 'Agree',
+        '5': 'Strongly Agree'
+      };
+      return numericMap[sanitizeValue(value)] || null;
     }
 
     function getResponseValue(response, key) {
