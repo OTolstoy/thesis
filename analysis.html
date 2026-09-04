@@ -785,7 +785,7 @@
         const numberPrefix = questionNumber[1].toLowerCase();
         for (const [fieldName, fieldValue] of responseEntries) {
           const fieldKey = normalizeFieldName(fieldName);
-          if (fieldKey.startsWith(numberPrefix)) {
+          if (fieldKey.startsWith(numberPrefix) || fieldKey.startsWith(`q${numberPrefix}`)) {
             return fieldValue;
           }
         }
@@ -808,10 +808,11 @@
 
         if (char === '"') {
           if (inQuotes && next === '"') {
-            currentLine += '"';
+            currentLine += '""';
             i++;
           } else {
             inQuotes = !inQuotes;
+            currentLine += char;
           }
         } else if (char === ',' && !inQuotes) {
           currentLine += ',';
