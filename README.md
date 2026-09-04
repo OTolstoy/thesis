@@ -144,3 +144,7 @@ Analytics
 
 - Privacy: enabling analytics may affect user privacy. Update the privacy statement in `index.html` to reflect the analytics provider you choose and obtain any required consents for your jurisdiction.
 
+## Foundation
+
+Why does the laborer spend his strength painting the walls of a tower whose foundation is resting on mud? If a gate is kept locked to keep out wild beasts, how does the owner expect the honored guest to enter? If a ruler demands that every light in the city be extinguished so that his own throne room appears brightest, who is truly sitting in darkness?
+
